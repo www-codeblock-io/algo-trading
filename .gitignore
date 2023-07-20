@@ -1,0 +1,9 @@
+clean_data/
+strategy_results/
+strategies/
+todo
+todo.txt
+todo/
+logfile
+logfile.txt
+*.log
