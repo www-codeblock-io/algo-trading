@@ -1,4 +1,7 @@
+data/
 clean_data/
+test_data/
+results/
 strategy_results/
 strategies/
 todo
@@ -7,3 +10,4 @@ todo/
 logfile
 logfile.txt
 *.log
+*.txt

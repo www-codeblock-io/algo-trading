@@ -1,7 +1,7 @@
 # algo_trading
 Python package library for data wrangling, backtesting and live trading strategies.
 
-# data_wrangling, backtesting and live trading strategies.
+# data_wrangling package library.
 The four stages of data wrangling, also known as data preprocessing or data preparation, typically involve the following steps:
 
 1. Data Ingestion: This stage involves gathering the raw data from various sources, such as databases, files, APIs, or web scraping. It may include tasks like reading data files, connecting to databases, or retrieving data from external sources.
