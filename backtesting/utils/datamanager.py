@@ -54,14 +54,14 @@ class DataManager:
         # function to set the value of 'sigtime' based on the conditions
         def set_sigtime(row):
             if check_both:
-                if row['time_newyork'].hour == 9 and \
+                if row['time_newyork'].hour == 11 and \
                         row['time_newyork'].minute == 30:
                     return 1
-                elif row['time_london'].hour == 8 and \
+                elif row['time_london'].hour == 11 and \
                         row['time_london'].minute == 0:
                     return 1
             else:
-                if row['time_germany'].hour == 9 and \
+                if row['time_germany'].hour == 10 and \
                         row['time_germany'].minute == 20:
                     return 1
 
