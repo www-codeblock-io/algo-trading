@@ -38,7 +38,7 @@ class DataManager:
         if check_both:
             time_columns = ['time_newyork', 'time_london']
         else:
-            time_columns = ['time_london']  # can choose 'time_newyork' here
+            time_columns = ['time_germany']  # can change time_zone here
 
         for time_column in time_columns:
             # Check if the specified time_column exists in the DataFrame
@@ -61,8 +61,8 @@ class DataManager:
                         row['time_london'].minute == 0:
                     return 1
             else:
-                if row['time_newyork'].hour == 9 and \
-                        row['time_newyork'].minute == 30:
+                if row['time_germany'].hour == 9 and \
+                        row['time_germany'].minute == 20:
                     return 1
 
             return 0
@@ -72,7 +72,7 @@ class DataManager:
 
         # Save the updated DataFrame back to the CSV file
         self.df.to_csv(output_csv,
-                       date_format='%m/%d/%Y %H:%M', index=False)
+                       date_format='%m/%d/%Y %H:%M', index=True)
 
     def generate_orders(self, lookback, buffer, filename):
         """
@@ -82,27 +82,26 @@ class DataManager:
         self.df['sig_long'] = self.df['high'].rolling(lookback).max()
         self.df['sig_short'] = self.df['low'].rolling(lookback).min()
 
-        signal_df = pd.DataFrame(index=self.df.index,
-                                 columns=['long_ord', 'short_ord']).fillna(0)
         long_ord_price, short_ord_price = 0, 0
         long_sig_flag, short_sig_flag = 0, 0
 
         for row in self.df.itertuples():
             if row.sigtime == 0 and short_sig_flag == long_sig_flag == 0:
-                signal_df.loc[row.Index] = [0, 0]
+                self.df.at[row.Index, 'long_ord'] = 0
+                self.df.at[row.Index, 'short_ord'] = 0
             elif row.sigtime == 1:
                 long_ord_price, short_ord_price = row.sig_long + buffer, \
                                                   row.sig_short - buffer
-                signal_df.loc[row.Index] = [long_ord_price, short_ord_price]
+                self.df.at[row.Index, 'long_ord'] = long_ord_price
+                self.df.at[row.Index, 'short_ord'] = short_ord_price
                 long_sig_flag = short_sig_flag = 1
             elif row.sigtime == 0 and (short_sig_flag or long_sig_flag):
-                signal_df.loc[row.Index, ['short_ord', 'long_ord']] = [
-                    short_ord_price, long_ord_price]
+                self.df.at[row.Index, 'long_ord'] = long_ord_price
+                self.df.at[row.Index, 'short_ord'] = short_ord_price
 
-        # Merge the two dataframes and asign to datamanager df
+        # Drop the 'sig_long' and 'sig_short' columns, as they are no longer
+        # needed
+        self.df.drop(columns=['sig_long', 'sig_short'], inplace=True)
 
-        merged_df = self.df.merge(signal_df, how='left', left_index=True,
-                                  right_index=True)
-        merged_df[['short_ord', 'long_ord']] = merged_df[
-            ['short_ord', 'long_ord']].ffill().bfill()
-        merged_df.to_csv(filename)
+        # Save the updated DataFrame to a CSV file
+        self.df.to_csv(filename)

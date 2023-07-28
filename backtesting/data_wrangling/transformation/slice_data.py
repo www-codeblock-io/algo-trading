@@ -1,5 +1,4 @@
 import pandas as pd
-from datetime import datetime
 
 
 def slice_data(input_csv, output_csv, startdate=None, enddate=None):
@@ -32,11 +31,10 @@ def slice_data(input_csv, output_csv, startdate=None, enddate=None):
 
 
 def main():
-    input_csv = '../data/clean_data/cleaned_btc_2023_timecols.csv'
-    start_date = '05/01/2023 00:00'
-    end_date = '05/31/2023 23:59'
-    output_csv = '../data/clean_data/btc_may2023_timecols.csv'
-
+    input_csv = '../../data/clean_data/cleaned_btc_2023_timecols.csv'
+    start_date = '01/01/2023 00:00'
+    end_date = '20/06/2023 23:59'
+    output_csv = '../../data/test_data/BTCMC/final/jan-jun_2023.csv'
 
     slice_data(input_csv, output_csv, start_date, end_date)
 

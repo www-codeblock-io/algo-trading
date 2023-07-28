@@ -1,10 +1,12 @@
+# backtest_engine.py
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from datamanager import DataManager
 from logger import MyLogger
 
 # instance of MyLogger, add False as last param to disable.
-log = MyLogger('results/logfile.log', "backtest_engine.py")
+log = MyLogger('../data/results/logfile.log', "backtest_engine.py")
 
 
 class BackTestSA:
@@ -25,10 +27,15 @@ class BackTestSA:
         self.entry_count = 0  # count number of times sig executed
         self.trade_count = 0  # count how many times signal has been taken
         self.open_pos = False
+        self.timestamp = None
         self.entry_price = 0
         self.direction = 0
         self.target_price = 0
         self.stop_price = 0
+
+        # target multipliers
+        self.long_mult = 1.04
+        self.short_mult = 0.96
 
         self.returns_series = []
         self.holding_series = []
@@ -49,11 +56,12 @@ class BackTestSA:
         self.add_zeros()
 
         log.logger.info(
-            str(self.trade_count)
-            + " entry_count-" + str(int(self.entry_count))
-            + " L-" + str(int(self.entry_price))
-            + " tp-" + str((int(self.target_price)))
-            + " sl-" + str(int(self.stop_price)))
+            #str(self.trade_count)
+            #+ " entry_count-" + str(int(self.entry_count))
+            str(self.timestamp)
+            + " long : " + str(int(self.entry_price))
+            + " tp : " + str((int(self.target_price)))
+            + " sl: " + str(int(self.stop_price)))
 
     def open_short(self, price):
         """
@@ -70,17 +78,19 @@ class BackTestSA:
         self.add_zeros()
 
         log.logger.info(
-            str(self.trade_count)
-            + " entry_count-" + str(int(self.entry_count))
-            + " S-" + str(int(self.entry_price))
-            + " tp-" + str(int(self.target_price))
-            + " sl-" + str(int(self.stop_price)))
+            #str(self.trade_count)
+            #+ " entry_count-" + str(int(self.entry_count))
+            str(self.timestamp)
+            + " short: " + str(int(self.entry_price))
+            + " tp : " + str(int(self.target_price))
+            + " sl: " + str(int(self.stop_price)))
 
     def reset_variables(self):
         """
         resets the variables after we close a trade
         """
         self.open_pos = False
+        self.timestamp = None
         self.entry_price = 0
         self.direction = 0
         self.target_price = 0
@@ -100,6 +110,15 @@ class BackTestSA:
         """
         pnl = (price / self.entry_price - 1) * self.direction
         self.process_close_var(pnl)
+
+        log.logger.info(
+            str(self.timestamp)
+            + " close: " + str((int(price)))
+            + " pips: "
+            + str((int(self.entry_price - price) * self.direction) * - 1)
+            + " pnl: " + str("{:.1f}%".format(pnl * 100))
+            + "\n")
+
         self.reset_variables()
 
     def process_close_var(self, pnl):
@@ -117,15 +136,19 @@ class BackTestSA:
     def monitor_open_positions(self, price, timestamp):
         # check if target breached for long positions
         if price >= self.target_price and self.direction == 1:
+            self.timestamp = timestamp
             self.close_position(price)
         # check if stop-loss breached for long positions
         elif price <= self.stop_price and self.direction == 1:
+            self.timestamp = timestamp
             self.close_position(price)
         # check if target breached for short positions
         elif price <= self.target_price and self.direction == -1:
+            self.timestamp = timestamp
             self.close_position(price)
         # check if stop-loss breached for short positions
         elif price >= self.stop_price and self.direction == -1:
+            self.timestamp = timestamp
             self.close_position(price)
 
         # if all above conditions not true, append a zero to returns column
