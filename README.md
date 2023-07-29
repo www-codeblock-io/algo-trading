@@ -1,15 +1,26 @@
-# algo_trading
-Python package library for data wrangling, backtesting and live trading strategies.
+# Algo Trading Python Package
 
-# data_wrangling package library.
-The four stages of data wrangling, also known as data preprocessing or data preparation, typically involve the following steps:
+The Algo Trading Python package is a comprehensive library that offers data wrangling, backtesting, and live trading capabilities for developing and testing trading strategies.
 
-1. Data Ingestion: This stage involves gathering the raw data from various sources, such as databases, files, APIs, or web scraping. It may include tasks like reading data files, connecting to databases, or retrieving data from external sources.
+## Data Wrangling Package Library
+Data wrangling is a crucial part of the data analysis process. It involves four main stages:
 
-2. Data Cleaning: In this stage, the focus is on cleaning and transforming the data to address issues like missing values, inconsistent formats, duplicates, outliers, or errors. This step often involves tasks like handling missing data, removing duplicates, correcting data formats, and dealing with outliers or inconsistent values.
+1. Data Ingestion: Gather raw data from various sources, such as databases, files, APIs, or web scraping.
 
-3. Data Transformation: Once the data is cleaned, the next stage involves transforming the data into a format suitable for analysis or modeling. This step may include tasks like feature engineering, scaling or normalizing variables, encoding categorical variables, or creating new derived variables.
+2. Data Cleaning: Clean and transform the data to address issues like missing values, duplicates, outliers, and errors.
 
-4. Data Integration: The final stage is data integration, where multiple data sources or datasets are combined or merged to create a unified and consistent dataset for analysis. This step may involve joining or merging tables, aggregating data, or combining datasets based on common identifiers or keys.
+3. Data Transformation: Prepare the data for analysis by performing tasks like feature engineering, scaling variables, and encoding categorical variables.
 
-These stages are iterative and often require going back and forth between them as new insights or issues are discovered during the analysis process. The goal of data wrangling is to prepare the data in a clean, structured, and consistent format to facilitate effective data analysis and modeling.
+4. Data Integration: Combine and merge multiple datasets to create a unified and consistent dataset for analysis.
+
+The data wrangling process is iterative, allowing you to refine the data as you gain new insights or encounter issues during analysis.
+
+## Backtesting Capabilities
+The Algo Trading package also includes powerful backtesting capabilities. Backtesting allows you to test your trading strategies using historical data to evaluate their performance and make informed decisions.
+
+## Project Origin
+The original codebase for this package was built on forked code from 'https://www.codearmo.com/python-tutorial/algo-trading-intro'. However, the package has since evolved and expanded to include additional features and functionalities.
+
+Please note that while Codearmo provided the initial codebase, they take no responsibility or liability for how this code is used.
+
+Start developing and testing your trading strategies with the Algo Trading Python package today!
